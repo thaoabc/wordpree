@@ -11,30 +11,42 @@
 
 ?>
 
-	<footer id="footer" class="site-footer">
-		<!-- <footer id="colophon"> -->
-		<div class="site-info">
-			<a href="<?php echo esc_url( __( 'https://wordpress.org/', 'thao-nguyen' ) ); ?>">
+	<!-- <footer id="colophon" class="site-footer">
+		<div class="site-info"> -->
+		<footer id="footer">
+		<nav id="site-navigation" class="main-navigation">
+			<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'thaonguyen' ); ?></button>
+			<?php
+			wp_nav_menu(
+				array(
+					'theme_location' => 'footer-nav',
+					// 'menu_id'        => 'primary-menu',
+					'container' => 'nav',
+					'container_class' => 'primary-menu',
+					'menu_class' => 'menu clearfix',
+					'items_wrap'      => '<ul id="%1$s" class="%2$s sf-menu">%3$s</ul>',
+				)
+			);
+			?>
+		</nav>
+                <div class="copyright">
+			<a href="<?php echo esc_url( __( 'https://wordpress.org/', 'thaonguyen' ) ); ?>">
 				<?php
 				/* translators: %s: CMS name, i.e. WordPress. */
-				printf( esc_html__( 'Proudly powered by %s', 'thao-nguyen' ), 'WordPress' );
+				printf( esc_html__( 'Proudly powered by %s', 'thaonguyen' ), 'WordPress' );
 				?>
 			</a>
 			<span class="sep"> | </span>
 				<?php
 				/* translators: 1: Theme name, 2: Theme author. */
-				printf( esc_html__( 'Theme: %1$s by %2$s.', 'thao-nguyen' ), 'thao-nguyen', '<a href="http://underscores.me/">thao nguyen</a>' );
+				printf( esc_html__( 'Theme: %1$s by %2$s.', 'thaonguyen' ), 'thaonguyen', '<a href="http://underscores.me/">Underscores.me</a>' );
 				?>
 		</div><!-- .site-info -->
 	</footer><!-- #colophon -->
-</div><!-- #page -->
+<!-- </div> -->
+<!-- #page -->
 
 <?php wp_footer(); ?>
 
 </body>
 </html>
-<?php
-    // echo '<pre>';
-    // print_r ($post->post_content);
-    // echo '</pre>';
-?>

@@ -13,12 +13,16 @@
  */
 
 get_header();
+
+// echo do_shortcode('[call_hello]');
+// echo do_shortcode('[shortcode_content]Viết cái gì đó vào đây[/shortcode_content]');
 ?>
 <div class="content">
 <section id="main-content">
 	<!-- <main id="primary" class="site-main"> -->
 
 		<?php
+		
 		if ( have_posts() ) :
 
 			if ( is_home() && ! is_front_page() ) :
@@ -42,7 +46,6 @@ get_header();
 
 			endwhile;
 			//thaonguyen_pagination();
-
 			the_posts_navigation();
 
 		else :
@@ -53,10 +56,11 @@ get_header();
 		?>
 	</section>
 	<section id="sidebar">
-
+		<?php 
+		get_sidebar();
+		?>
 	</section>
 	<!-- </main> -->
 	</div>
 <?php
-get_sidebar();
 get_footer();

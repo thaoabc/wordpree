@@ -53,6 +53,7 @@ if ( ! function_exists( 'thao_nguyen_setup' ) ) :
 		register_nav_menus(
 			array(
 				'menu-1' => esc_html__( 'Primary', 'thao-nguyen' ),
+				'footer-nav' => esc_html__( 'Footer menu', 'thao-nguyen' ),
 			)
 		);
 
@@ -117,9 +118,9 @@ function thao_nguyen_content_width() {
 	// This variable is intended to be overruled from themes.
 	// Open WPCS issue: {@link https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/issues/1043}.
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-	$GLOBALS['content_width'] = apply_filters( 'thao_nguyen_content_width', 640 );
+	//$GLOBALS['content_width'] = apply_filters( 'thao_nguyen_content_width', 640 );
 }
-add_action( 'after_setup_theme', 'thao_nguyen_content_width', 0 );
+//add_action( 'after_setup_theme', 'thao_nguyen_content_width', 0 );
 
 /**
  * Register widget area.
@@ -127,19 +128,61 @@ add_action( 'after_setup_theme', 'thao_nguyen_content_width', 0 );
  * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
  */
 function thao_nguyen_widgets_init() {
-	register_sidebar(
-		array(
-			'name'          => esc_html__( 'Sidebar', 'thao-nguyen' ),
-			'id'            => 'sidebar-1',
-			'description'   => esc_html__( 'Add widgets here.', 'thao-nguyen' ),
-			'before_widget' => '<section id="%1$s" class="widget %2$s">',
-			'after_widget'  => '</section>',
-			'before_title'  => '<h2 class="widget-title">',
-			'after_title'   => '</h2>',
-		)
+	$widgets=array(
+		['name'=>array(
+			'sidebar',
+			'sb2'
+		)],
+		['id'=>array(
+			'sidebar-1',
+			'sd2-2'
+		)],
+		['description'=>array(
+			'Add widgets here.',
+			'Add widgets here2.'
+		)]
 	);
+	foreach($widgets['name'] as $widget)
+    {
+      echo($widget);
+      // foreach($widget as $wd)
+      // {
+        
+      // echo($wd);
+      // }
+	}
+	foreach($widgets as $widget)
+    {
+      pr($widget);
+      if(isset($widget['name'])){
+        
+      foreach($widget['name'] as $wd)
+      {
+        
+      echo($wd);
+      }
+      }
+    }
+	foreach($widgets as $widget)
+	{
+		foreach($widget as $wd)
+		{
+			register_sidebar(
+				array(
+					'name'          => esc_html__( $wd['name'], 'thao-nguyen' ),
+					'id'            => $wd['id'],
+					'description'   => esc_html__( $wd['description'], 'thao-nguyen' ),
+					'before_widget' => '<section id="%1$s" class="widget %2$s">',
+					'after_widget'  => '</section>',
+					'before_title'  => '<h2 class="widget-title">',
+					'after_title'   => '</h2>',
+				)
+			);
+		}
+	}
+	
 }
-add_action( 'widgets_init', 'thao_nguyen_widgets_init' );
+//add_action( 'widgets_init', 'thao_nguyen_widgets_init' );
 
 /**
  * Enqueue scripts and styles.
@@ -220,57 +263,109 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 
 function create_custom_post_type()
 {
-	$label=array(
-		'name'=>'Các sản phẩm',
-		'signular_name' => 'Sản phẩm'
+	$name_post=array(
+		[
+			$label=array(
+				[
+					'name'=>'Các sản phẩm',
+					'signular_name' => 'Sản phẩm'
+				],
+				[
+					'name'=>'Các sự kiện',
+					'signular_name' => 'Sự kiện'
+				]
+			)
+		],
+		[
+			$name=array(
+				'sanpham',
+				'sukien'
+			)
+		],
+		[
+			$description=array(
+				'Post type đăng sản phẩm',
+				'Post type đăng sự kiện'
+			)
+		]
+		
 	);
 
-	$args=array(
-		'labels'=>$label,
-		'description'=>'Post type đăng sản phẩm',
-		'supports'=>array(
-			'title',
-			'editor',
-			'excerpt',
-			'author',
-			'thumbnail',
-			'comments',
-			'trackbacks',
-			'revisions',
-			'custom-fields'
-		),
-		'taxonomies'=>array('category','post_tag'),
-		'hierarchical'=>false,
-		'public'=>true,
-		'show_ui'=>true,
-		'show_in_menu'=>true,
-		'show_in_nav_menus'=>true,
-		'show_in_admin_bar'=>true,
-		'menu_position'=>5,
-		'menu_icon'=>'',
-		'can_export'=>true,
-		'has_archive'=>true,
-		'exclude_from_search'=>false,
-		'publicly_queryable'=>true,
-		'capability_type'=>'post'
-	);
+	
+	foreach($name_post as $post)
+	{
+		foreach($post->$label as $label_post)
+		{
+			$args=array(
+				'labels'=>$label_post,
+				'description'=>$post->$description,
+				'supports'=>array(
+					'title',
+					'editor',
+					'excerpt',
+					'author',
+					'thumbnail',
+					'comments',
+					'trackbacks',
+					'revisions',
+					'custom-fields'
+				),
+				'taxonomies'=>array('category','post_tag'),
+				'hierarchical'=>false,
+				'public'=>true,
+				'show_ui'=>true,
+				'show_in_menu'=>true,
+				'show_in_nav_menus'=>true,
+				'show_in_admin_bar'=>true,
+				'menu_position'=>5,
+				'menu_icon'=>'',
+				'can_export'=>true,
+				'has_archive'=>true,
+				'exclude_from_search'=>false,
+				'publicly_queryable'=>true,
+				'capability_type'=>'post'
+			);
+			
+			register_post_type($post->$name,$args);
+		}
+	}
 
-	register_post_type('sanpham',$args);
 }
 
-add_action('init','create_custom_post_type');
+//add_action('init','create_custom_post_type');
 
-register_nav_menus(
-	array(
-			'main-nav' => 'Menu chính'
-	)
-);
+function hello_world() {
+	return "Hello World!";
+	}
+add_shortcode( 'call_hello', 'hello_world' );
 
-$menu = array(
-	'theme_location' => $slug,
-	'container' => 'nav',
-	'container_class' => $slug,
-	'items_wrap'      => '<ul id="%1$s" class="%2$s sf-menu">%3$s</ul>',
-  );
+function create_shortcode_randompost() {
+ 
+	$random_query = new WP_Query(array(
+			'posts_per_page' => 1,
+			'orderby' => 'rand'
+	));
 
+	ob_start();
+	if ( $random_query->have_posts() ) :
+			"<ol>";
+			while ( $random_query->have_posts() ) :
+					$random_query->the_post();?>
 
+							<li><a href="<?php the_permalink(); ?>"><h5><?php the_title(); ?></h5></a></li>
+
+			<?php endwhile;
+			"</ol>";
+	endif;
+	$list_post = ob_get_contents(); //Lấy toàn bộ nội dung phía trên bỏ vào biến $list_post để return
+
+	ob_end_clean();
+
+	return $list_post;
+}
+add_shortcode('random_post', 'create_shortcode_randompost');
+
+function create_shortcode_content($args, $content) {
+	return strtoupper($content); //In hoa toàn bộ content trong shortcode
+}
+add_shortcode('shortcode_content', 'create_shortcode_content');

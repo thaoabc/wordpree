@@ -17,10 +17,15 @@
 				</div>		
 			</div>			
 			<!-------Blog Right Sidebar-------------------->
-			<?php get_sidebar(); ?>	
+
 			<!-------End Blog Right Sidebar------>	
 		</div>
 	</div>	
 </section>
+<section id="sidebar">
+			<?php 
+				get_sidebar();
+			?>
+			</section>
 <div class="clearfix"></div>
 <?php get_footer(); ?>
